@@ -19,7 +19,6 @@ public:
     void RegisterQueue(std::string queueName);
 
     void AddMessage(std::shared_ptr<Message> ptrMessage);
-    Message* GetMessage(std::string queueName);
 
     bool HasAvailableMessages();
     std::unordered_map<int, std::vector<nlohmann::json>> GetAvailableMessages();

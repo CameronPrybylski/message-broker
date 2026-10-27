@@ -21,7 +21,6 @@ void MessageBroker::HandleMessage(nlohmann::json& jsonMessage, int client)
     {
         RegisterSubscriber(message->GetDestination(), client);
     }
-    std::cout << "Handle message of type: " << message->GetType() << std::endl;
 }
 
 void MessageBroker::AddMessage(std::shared_ptr<Message> ptrMessage)
@@ -29,12 +28,6 @@ void MessageBroker::AddMessage(std::shared_ptr<Message> ptrMessage)
     queueManager->AddToQueue(ptrMessage);
 }
 
-Message* MessageBroker::GetMessage(std::string queueName)
-{
-    Message message = *(queueManager->GetFromQueue(queueName));
-    //return NotifySubscribers(queueName, message);
-    return nullptr;
-}
 
 bool MessageBroker::HasAvailableMessages()
 {
@@ -63,7 +56,6 @@ std::unordered_map<int, std::vector<nlohmann::json>> MessageBroker::GetAvailable
 
 void MessageBroker::RegisterSubscriber(std::string queueName, int subscriber)
 {
-    std::cout << "Subscriber: " << subscriber << " subscribed to queue: " << queueName << std::endl;
     subscribers[queueName].push_back(subscriber);
 }
 

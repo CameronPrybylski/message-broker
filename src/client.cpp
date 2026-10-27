@@ -39,14 +39,6 @@ void Client::Connect(std::string serverIPAddress, int serverPort)
     
     int connection = connect(clientSocket, (struct sockaddr*) &address, sizeof(address));
 
-    if(connection == 0)
-    {
-        std::cout << "Connected!" << std::endl;
-    }
-    else{
-        std::cout << "Not Connected!" << std::endl;
-    }
-
 }
 
 void Client::Disconnect()
@@ -76,14 +68,6 @@ std::string Client::ReceiveResonse()
             return "ERROR";
         }
 
-        for(auto item : j.items())
-        {
-            std::cout << item.key() << std::endl;
-        }
-        if(message == "PONG")
-        {
-            std::cout << "Client Received: " << message << std::endl;
-        }
         return message;
     }
     return "";

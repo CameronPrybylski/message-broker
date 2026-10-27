@@ -198,7 +198,6 @@ nlohmann::json Server::SendResponse()
     if(!messages.empty())
     {
         j = messages.begin()->second.front();
-        std::cout << "Sent to " << messages.begin()->first << std::endl;
         std::unordered_map<int, std::vector<nlohmann::json>>::iterator subcriberMessages = messages.begin();
         for(; subcriberMessages != messages.end(); ++subcriberMessages)
         {
