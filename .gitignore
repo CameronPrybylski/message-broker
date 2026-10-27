@@ -46,7 +46,7 @@ CTestTestfile.cmake
 [Bb]uild/
 
 # nlohmann
-nlohmann/json.hpp
+external/nlohmann/json.hpp
 
 
 # VSCode
