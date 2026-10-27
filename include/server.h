@@ -2,6 +2,7 @@
 
 #include <string>
 #include <set>
+#include <map>
 
 #include <json.hpp>
 
@@ -24,6 +25,8 @@ public:
     bool IsClientAvailable(int clientSocket);
     bool HandleClient(int clientSocket);
 
+    void DisconnectClient(int clientSocket);
+
     void ReceiveRequest(nlohmann::json& jsonMessage);
     nlohmann::json SendResponse();
 
@@ -36,4 +39,5 @@ private:
     int serverSocket;
     //int clientSocket;
     std::set<int> clientSockets;
+    std::unordered_map<int, std::string> receiveBuffers;
 };
