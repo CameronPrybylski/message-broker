@@ -29,7 +29,8 @@ bool Server::Start()
         {
             if(IsClientAvailable(*clientSocket))
             {
-                if(!HandleClient(*clientSocket))
+                bool disconnect = HandleClient(*clientSocket);
+                if(disconnect)
                 {
                     clientSocket = clientSockets.erase(clientSocket);
                 }
@@ -85,31 +86,52 @@ bool Server::HandleClient(int clientSocket)
 
         ssize_t send(int socket, const void *buffer, size_t length, int flags);
     */
+    if(!receiveBuffers.contains(clientSocket))
+    {
+        receiveBuffers[clientSocket] = "";
+    }
     char buffer[1024];
     ssize_t bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0);
     if(bytesReceived > 0)
     {
-        std::string message(buffer, bytesReceived);
-        if(message == "disconnect")
-        {
-            return false;
-        }
+        receiveBuffers[clientSocket].append(buffer);
+        size_t delimntr;
 
-        nlohmann::json j;
-        try
+        while(receiveBuffers[clientSocket].find("\n") != std::string::npos)
         {
-            j = nlohmann::json::parse(message);
-        }
-        catch(nlohmann::json::parse_error& ex)
-        {
-            std::cerr << "Could not parse json: " << message << std::endl;
-            return true;
-        }
+            delimntr = receiveBuffers[clientSocket].find("\n");
+            std::string message = receiveBuffers[clientSocket].substr(0, delimntr);
+
+            nlohmann::json j;
+            try
+            {
+                j = nlohmann::json::parse(message);
+            }
+            catch(nlohmann::json::parse_error& ex)
+            {
+                std::cerr << "Could not parse json: " << message << std::endl;
+                receiveBuffers[clientSocket].erase(0, delimntr + 1);
+                continue;
+            }
+            
+            messageBroker->HandleMessage(j, clientSocket);
+            
+            receiveBuffers[clientSocket].erase(0, delimntr + 1);
         
-        messageBroker->HandleMessage(j, clientSocket);
+        }
         
     }
-    return true;
+    else if(bytesReceived == 0)
+    {
+        DisconnectClient(clientSocket);
+        return true;
+    }
+    return false;
+}
+
+void Server::DisconnectClient(int clientSocket)
+{
+    close(clientSocket);
 }
 
 bool Server::CreateSocket()

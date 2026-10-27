@@ -51,9 +51,7 @@ void Client::Connect(std::string serverIPAddress, int serverPort)
 
 void Client::Disconnect()
 {
-    std::string disconnect = "disconnect";
-    const char* request = disconnect.c_str();
-    send(clientSocket, request, strlen(request), 0);
+    close(clientSocket);
     this->clientSocket = -1;
 }
 
