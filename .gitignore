@@ -45,3 +45,9 @@ CTestTestfile.cmake
 # Common CMake build directories
 [Bb]uild/
 
+# nlohmann
+external/nlohmann/json.hpp
+
+
+# VSCode
+.vscode

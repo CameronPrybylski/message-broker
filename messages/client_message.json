@@ -1,0 +1,5 @@
+{
+    "type" : "PUBLISH",
+    "destination" : "hello",
+    "content" : "Hello, world!"
+}
