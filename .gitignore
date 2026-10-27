@@ -45,3 +45,5 @@ CTestTestfile.cmake
 # Common CMake build directories
 [Bb]uild/
 
+# VSCode
+.vscode

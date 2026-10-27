@@ -1,0 +1,6 @@
+{
+    "type" : "SUBSCRIBE",
+    "destination" : "hello",
+    "content" : "hey, world!",
+    "counsumer" : "client1"
+}
